@@ -4,14 +4,14 @@ import styled from "styled-components";
 function AuthForm(props) {
   // UseState for the values in the form
   //   const [formValue, setvalue] = useState({ email: "", password: "" });
-  const { formValue, setvalue, firstButtonHandler } = props;
+  const { formValue, setValue, firstButtonHandler } = props;
   //handling change in value
   console.log(props, firstButtonHandler);
   const handleValueChange = (ev) => {
     ev.preventDefault();
     const { type, value } = ev.target;
     //changing the values stored in "formvalue" each time a change is made
-    setvalue({
+    setValue({
       ...formValue,
       [type]: value,
     });
@@ -38,7 +38,9 @@ function AuthForm(props) {
           <Input onChange={handleValueChange} type={"password"}></Input>
         </InputDiv>
         <ButtonsDiv>
-          <Button onClick={props.firstButtonHandler}>Sif{props.still}</Button>
+          <Button onClick={props.firstButtonHandler}>
+            {props.firstButton}
+          </Button>
           <Button>{props.secondButton}</Button>
         </ButtonsDiv>
       </Form>

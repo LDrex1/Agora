@@ -1,24 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import AuthForm from "./AuthForm";
+import { auth } from "./firebase-config";
+import { createUserWithEmailAndPassword } from "@firebase/auth";
 
 function SignUp() {
+  const [formValue, setValue] = useState({ email: "", password: "" });
+
+  const signUpHandler = (ev) => {
+    ev.preventDefault();
+    const { email, password } = formValue;
+    // console.log(email, "I hav been clicked");
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        const user = userCredential.user;
+        console.log(user, "done");
+        let signUpMessage = `${user.email}, your account has been created`;
+        console.log(signUpMessage);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
   return (
     <Wrapper>
-      <AuthForm />
-      <ButtonsDiv>
-        <Button>Sign In</Button>
-        <Button>Sign in with Google</Button>
-      </ButtonsDiv>
+      <AuthForm
+        firstButton="Sign Up"
+        firstButtonHandler={signUpHandler}
+        secondButton="Sign Up With Google"
+        formValue={formValue}
+        setValue={setValue}
+      />
     </Wrapper>
   );
 }
 
 export default SignUp;
-// console.log(
-//   AuthForm().props.children.props.children[0].props.children.props.valueOf(),
-//   "df"
-// );
+
 const Wrapper = styled.div`
   min-height: 100vh;
   display: flex;
@@ -26,12 +46,3 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-const ButtonsDiv = styled.div`
-  margin-top: 10px;
-  display: flex;
-  column-gap: calc(10px + 3vw);
-  justify-content: center;
-`;
-
-const Button = styled.button``;
