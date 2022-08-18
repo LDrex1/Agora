@@ -35,3 +35,7 @@ button {
 .mt-5 {
   margin-top: 4.2rem;
 }
+
+.text-center {
+  text-align: center;
+}
