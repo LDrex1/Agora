@@ -1,12 +1,20 @@
 import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
+import { auth } from "./firebase-config";
+import { onAuthStateChanged } from "@firebase/auth";
 
 function AuthForm(props) {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("signedin");
+    } else {
+      console.log("no user detected");
+    }
+  });
   // UseState for the values in the form
-  //   const [formValue, setvalue] = useState({ email: "", password: "" });
   const { formValue, setValue, firstButtonHandler } = props;
   //handling change in value
-  console.log(props, firstButtonHandler);
   const handleValueChange = (ev) => {
     ev.preventDefault();
     const { type, value } = ev.target;
