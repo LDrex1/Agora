@@ -1,17 +1,25 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { auth } from "./firebase-config";
 import { onAuthStateChanged } from "@firebase/auth";
 
 function AuthForm(props) {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log("signedin");
-    } else {
-      console.log("no user detected");
-    }
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setLoading(true);
+      if (user) {
+        // console.log("signedin");
+      } else {
+        // console.log("no user detected");
+      }
+      setLoading(false);
+    });
+    return () => unsub;
   });
+
   // UseState for the values in the form
   const { formValue, setValue, firstButtonHandler } = props;
   //handling change in value
@@ -46,10 +54,10 @@ function AuthForm(props) {
           <Input onChange={handleValueChange} type={"password"}></Input>
         </InputDiv>
         <ButtonsDiv>
-          <Button onClick={props.firstButtonHandler}>
+          <Button disabled={loading} onClick={props.firstButtonHandler}>
             {props.firstButton}
           </Button>
-          <Button>{props.secondButton}</Button>
+          <Button disabled={loading}>{props.secondButton}</Button>
         </ButtonsDiv>
       </Form>
     </>
