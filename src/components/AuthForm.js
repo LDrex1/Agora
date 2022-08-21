@@ -8,6 +8,7 @@ function AuthForm(props) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log("first");
     const unsub = onAuthStateChanged(auth, (user) => {
       setLoading(true);
       if (user) {
@@ -17,11 +18,11 @@ function AuthForm(props) {
       }
       setLoading(false);
     });
-    return () => unsub;
-  });
+    return () => unsub();
+  }, []);
 
   // UseState for the values in the form
-  const { formValue, setValue, firstButtonHandler } = props;
+  const { formValue, setValue } = props;
   //handling change in value
   const handleValueChange = (ev) => {
     ev.preventDefault();
